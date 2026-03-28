@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>おうちごはん帖</title>
+<script src="data.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Kaisei+Opti:wght@400;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #fffbf4;
+  --paper:     #ffffff;
+  --paper2:    #fef5e4;
+  --ink:       #2a3d28;
+  --ink-mid:   #60A468;
+  --ink-lt:    #8fc498;
+  --accent:    #D38C42;
+  --accent-lt: #fdefc8;
+  --accent-md: #F6DC9A;
+  --sub:       #60A468;
+  --border:    #b8ddb8;
+  --border2:   #60A468;
+  --rule:      #d8ecd8;
+  --tape:      rgba(96,164,104,0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Zen Kurenaido',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+.ruled{
+  background-image:repeating-linear-gradient(
+    to bottom,transparent 0px,transparent 31px,
+    var(--rule) 31px,var(--rule) 32px
+  );
+}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,251,244,0.95);
+  backdrop-filter:blur(6px);
+  border-bottom:2px solid var(--ink);
+  padding:0 2.5rem;height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-family:'Kaisei Opti',serif;
+  font-size:1.4rem;color:var(--ink);
+  text-decoration:none;letter-spacing:0.1em;
+  position:relative;
+}
+.logo::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:3px;background:var(--accent);border-radius:2px;
+  transform:rotate(-0.5deg);
+}
+.header-link{
+  font-family:'Caveat',cursive;
+  font-size:1rem;color:var(--ink-mid);
+  text-decoration:none;
+  border-bottom:1.5px dashed var(--border2);
+  padding-bottom:1px;
+  transition:color .2s;
+}
+.header-link:hover{color:var(--accent);}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:88vh;
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+}
+/* ノートのマージン線 */
+.hero::before{
+  content:'';position:absolute;left:4rem;top:0;bottom:0;
+  width:2px;background:rgba(96,164,104,0.25);
+}
+.hero-inner{
+  max-width:1100px;margin:0 auto;
+  padding:5rem 2.5rem 5rem 6rem;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+  width:100%;
+}
+.hero-label{
+  font-family:'Caveat',cursive;font-size:1.1rem;
+  color:var(--accent);display:block;
+  margin-bottom:0.8rem;transform:rotate(-1deg);
+}
+.hero-title{
+  font-family:'Kaisei Opti',serif;
+  font-size:clamp(2.6rem,5vw,4rem);
+  line-height:1.2;color:var(--ink);
+  margin-bottom:1.2rem;letter-spacing:0.06em;
+}
+.hero-title em{
+  font-style:italic;color:var(--accent);
+  display:inline-block;transform:rotate(-1deg);
+}
+.hero-sub{
+  font-size:0.92rem;color:var(--ink-mid);
+  line-height:2;margin-bottom:2.2rem;
+}
+.btn-enter{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--ink);color:var(--paper);
+  border:2px solid var(--ink);
+  padding:.85rem 2.2rem;
+  font-family:'Kaisei Opti',serif;
+  font-size:1rem;letter-spacing:0.12em;
+  text-decoration:none;border-radius:3px;
+  transform:rotate(-0.5deg);
+  transition:all .25s;
+  box-shadow:4px 4px 0 var(--border2);
+}
+.btn-enter:hover{
+  background:var(--accent);border-color:var(--accent);
+  transform:rotate(0.3deg) translateY(-2px);
+  box-shadow:5px 6px 0 rgba(96,164,104,0.4);
+}
+.btn-arrow{font-size:1.1rem;transition:transform .2s;}
+.btn-enter:hover .btn-arrow{transform:translateX(4px);}
+
+/* ===== HERO ILLUSTRATION（手書き風カード群） ===== */
+.hero-visual{
+  position:relative;height:400px;
+}
+.vis-card{
+  position:absolute;
+  background:var(--paper);
+  border:2px solid var(--ink);
+  border-radius:3px;
+  overflow:hidden;
+  box-shadow:4px 4px 0 rgba(42,61,40,0.12);
+}
+/* テープ装飾 */
+.vis-card::before{
+  content:'';position:absolute;
+  top:-10px;left:50%;
+  transform:translateX(-50%) rotate(-1deg);
+  width:50px;height:16px;
+  background:var(--accent-md);opacity:.7;
+  border-radius:2px;z-index:2;
+  border:1px solid rgba(42,61,40,0.1);
+}
+.vis-card::after{
+  content:'';position:absolute;
+  top:-10px;left:50%;
+  transform:translateX(-50%) rotate(-1deg);
+  width:50px;height:16px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.2) 0,rgba(255,255,255,.2) 2px,transparent 2px,transparent 5px);
+  border-radius:2px;z-index:3;pointer-events:none;
+}
+.vis-img{
+  width:100%;height:120px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;
+}
+.vis-body{padding:.6rem .8rem .8rem;}
+.vis-cat{
+  font-family:'Caveat',cursive;font-size:.78rem;
+  color:var(--accent);display:block;
+}
+.vis-title{
+  font-family:'Kaisei Opti',serif;font-size:.88rem;
+  color:var(--ink);line-height:1.3;
+}
+
+.vc-1{width:155px;top:20px;left:10px;transform:rotate(-3deg);}
+.vc-2{width:145px;top:30px;left:155px;transform:rotate(2.5deg);}
+.vc-3{width:150px;top:185px;left:60px;transform:rotate(-1.5deg);}
+.vc-4{width:140px;top:200px;left:195px;transform:rotate(3deg);}
+
+.vc-1 .vis-img{background:var(--accent-lt);}
+.vc-2 .vis-img{background:var(--rule);}
+.vc-3 .vis-img{background:var(--accent-lt);opacity:.85;}
+.vc-4 .vis-img{background:var(--rule);opacity:.9;}
+
+/* 手書き風ラインデコ */
+.deco-line{
+  position:absolute;
+  font-family:'Caveat',cursive;
+  font-size:.82rem;color:var(--ink-lt);
+  transform:rotate(-8deg);
+}
+.deco-line-1{bottom:50px;right:10px;}
+.deco-line-2{top:10px;right:30px;transform:rotate(5deg);}
+
+/* ===== FEATURES ===== */
+.features{
+  border-top:2px solid var(--border);
+  border-bottom:2px solid var(--border);
+  background:var(--paper);
+}
+.features-inner{
+  max-width:1100px;margin:0 auto;
+  padding:4rem 2.5rem 4rem 6rem;
+  position:relative;
+}
+.features-inner::before{
+  content:'';position:absolute;left:4rem;top:0;bottom:0;
+  width:2px;background:rgba(96,164,104,0.2);
+}
+.features-label{
+  font-family:'Caveat',cursive;font-size:1.1rem;
+  color:var(--sub);display:block;margin-bottom:1rem;
+  transform:rotate(-1deg);
+}
+.features-title{
+  font-family:'Kaisei Opti',serif;
+  font-size:1.6rem;color:var(--ink);
+  margin-bottom:2.5rem;letter-spacing:.06em;
+}
+.features-title em{font-style:italic;color:var(--accent);}
+.feat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.4rem;
+}
+.feat-card{
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:3px;
+  padding:1.4rem 1.3rem;
+  position:relative;
+  transition:transform .25s,box-shadow .25s;
+}
+.feat-card:nth-child(odd){transform:rotate(-0.4deg);}
+.feat-card:nth-child(even){transform:rotate(0.4deg);}
+.feat-card:hover{
+  transform:rotate(0deg) scale(1.02);
+  box-shadow:4px 4px 0 var(--border2);
+}
+.feat-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:4px;
+  background:repeating-linear-gradient(
+    90deg,var(--sub) 0,var(--sub) 6px,
+    transparent 6px,transparent 10px
+  );
+}
+.feat-icon{font-size:1.8rem;margin-bottom:.6rem;display:block;}
+.feat-name{
+  font-family:'Kaisei Opti',serif;
+  font-size:.95rem;color:var(--ink);
+  margin-bottom:.3rem;
+}
+.feat-desc{font-size:.8rem;color:var(--ink-mid);line-height:1.75;}
+
+/* ===== PICKUP ===== */
+.pickup{
+  background:var(--paper2);
+}
+.pickup-inner{
+  max-width:1100px;margin:0 auto;
+  padding:4rem 2.5rem 4rem 6rem;
+  position:relative;
+}
+.pickup-inner::before{
+  content:'';position:absolute;left:4rem;top:0;bottom:0;
+  width:2px;background:rgba(96,164,104,0.2);
+}
+.pickup-label{
+  font-family:'Caveat',cursive;font-size:1.1rem;
+  color:var(--accent);display:block;
+  margin-bottom:.8rem;transform:rotate(-1deg);
+}
+.pickup-title{
+  font-family:'Kaisei Opti',serif;font-size:1.6rem;
+  color:var(--ink);margin-bottom:2rem;letter-spacing:.06em;
+}
+.pickup-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.2rem;
+}
+.pickup-item{
+  background:var(--paper);
+  border:2px solid var(--ink);
+  border-radius:3px;
+  overflow:hidden;
+  text-decoration:none;
+  color:var(--ink);
+  transition:transform .25s,box-shadow .25s;
+  position:relative;
+  display:block;
+}
+.pickup-item::before{
+  content:'';position:absolute;
+  top:-1px;left:50%;transform:translateX(-50%);
+  width:36px;height:12px;
+  background:var(--tape);
+  border-radius:2px;z-index:2;
+  border:1px solid rgba(42,61,40,.1);
+}
+.pickup-item:nth-child(odd){transform:rotate(-0.5deg);}
+.pickup-item:nth-child(even){transform:rotate(0.5deg);}
+.pickup-item:hover{
+  transform:rotate(0deg) scale(1.03);
+  box-shadow:4px 4px 0 var(--border2);
+}
+.pickup-img{
+  height:100px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;
+  background:var(--accent-lt);
+}
+.pickup-body{
+  padding:.6rem .8rem .8rem;
+  border-top:1.5px solid var(--border);
+}
+.pickup-cat{
+  font-family:'Caveat',cursive;font-size:.75rem;
+  color:var(--accent);display:block;
+}
+.pickup-name{
+  font-family:'Kaisei Opti',serif;font-size:.85rem;
+  line-height:1.3;
+}
+
+/* ===== CTA ===== */
+.cta{
+  background:var(--ink);
+  position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;left:4rem;top:0;bottom:0;
+  width:2px;background:rgba(246,220,154,0.2);
+}
+.cta-inner{
+  max-width:1100px;margin:0 auto;
+  padding:4.5rem 2.5rem 4.5rem 6rem;
+  display:flex;align-items:center;
+  justify-content:space-between;gap:3rem;flex-wrap:wrap;
+}
+.cta-text .cta-label{
+  font-family:'Caveat',cursive;font-size:1rem;
+  color:var(--accent-md);display:block;margin-bottom:.6rem;
+}
+.cta-text h2{
+  font-family:'Kaisei Opti',serif;
+  font-size:2rem;color:var(--paper);
+  line-height:1.3;margin-bottom:.8rem;
+  letter-spacing:.06em;
+}
+.cta-text h2 em{font-style:italic;color:var(--accent-md);}
+.cta-text p{
+  font-size:.88rem;
+  color:rgba(255,255,255,.55);
+  line-height:1.9;
+}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--accent);color:#fff;
+  border:2px solid var(--accent);
+  padding:.9rem 2.4rem;
+  font-family:'Kaisei Opti',serif;
+  font-size:1rem;letter-spacing:.1em;
+  text-decoration:none;border-radius:3px;
+  transform:rotate(-0.5deg);
+  transition:all .25s;
+  box-shadow:4px 4px 0 rgba(246,220,154,.3);
+  white-space:nowrap;
+}
+.btn-cta:hover{
+  background:#b87030;border-color:#b87030;
+  transform:rotate(.3deg) translateY(-2px);
+  box-shadow:5px 6px 0 rgba(246,220,154,.35);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--ink);
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:2rem 2.5rem 2rem 6rem;
+}
+.footer-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{
+  font-family:'Kaisei Opti',serif;font-size:1.2rem;
+  color:rgba(255,255,255,.85);font-style:italic;
+  letter-spacing:.08em;
+}
+footer p{
+  font-family:'Caveat',cursive;font-size:.95rem;
+  color:rgba(255,255,255,.35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:3rem;}
+  .hero::before,.features-inner::before,.pickup-inner::before,.cta::before,footer::before{display:none;}
+  .hero-inner,.features-inner,.pickup-inner,.cta-inner,footer{padding-left:2rem;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .pickup-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .feat-grid{grid-template-columns:1fr;}
+  .pickup-grid{grid-template-columns:1fr 1fr;}
+  .hero-visual{height:300px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">おうちごはん帖</a>
+  <a href="recipe-site.html" class="header-link">レシピを見る →</a>
+</header>
+
+<!-- HERO -->
+<section class="hero ruled">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-label">— 家族のための、手書きレシピ帖 —</span>
+      <h1 class="hero-title">毎日の食卓を<br><em>もっと豊かに</em></h1>
+      <p class="hero-sub">
+        手間をかけすぎず、でも丁寧に。<br>
+        家族みんなが笑顔になれるレシピを<br>
+        ひとつひとつ大切に集めました。
+      </p>
+      <a href="recipe-site.html" class="btn-enter">
+        レシピ帖を開く
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- 手書き風カード群 -->
+    <div class="hero-visual">
+      <div class="vis-card vc-1">
+        <div class="vis-img">🥘</div>
+        <div class="vis-body">
+          <span class="vis-cat">ごはん</span>
+          <div class="vis-title">豚肉の<br>やさしい煮込み</div>
+        </div>
+      </div>
+      <div class="vis-card vc-2">
+        <div class="vis-img">🍰</div>
+        <div class="vis-body">
+          <span class="vis-cat">スイーツ</span>
+          <div class="vis-title">りんごの<br>しっとりケーキ</div>
+        </div>
+      </div>
+      <div class="vis-card vc-3">
+        <div class="vis-img">☕</div>
+        <div class="vis-body">
+          <span class="vis-cat">ドリンク</span>
+          <div class="vis-title">ほうじ茶<br>ラテ</div>
+        </div>
+      </div>
+      <div class="vis-card vc-4">
+        <div class="vis-img">🥪</div>
+        <div class="vis-body">
+          <span class="vis-cat">パン・サンド</span>
+          <div class="vis-title">たまごサンド</div>
+        </div>
+      </div>
+      <div class="deco-line deco-line-1">おいしいもの、<br>集めました。</div>
+      <div class="deco-line deco-line-2">🌿</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-inner">
+    <span class="features-label">このサイトでできること</span>
+    <h2 class="features-title">使いやすい<em>レシピ帖</em>です</h2>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <span class="feat-icon">🔍</span>
+        <div class="feat-name">レシピ検索</div>
+        <p class="feat-desc">食材名や気分で検索。カテゴリからも絞り込めます。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">♡</span>
+        <div class="feat-name">お気に入り登録</div>
+        <p class="feat-desc">気になったレシピにハートをつけてまとめて確認できます。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📸</span>
+        <div class="feat-name">写真つきレシピ</div>
+        <p class="feat-desc">料理の写真を大きく表示。クリックで拡大して確認できます。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🍳</span>
+        <div class="feat-name">詳しい作り方</div>
+        <p class="feat-desc">材料の分量から手順まで、わかりやすく丁寧に記載しています。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📱</span>
+        <div class="feat-name">スマホ対応</div>
+        <p class="feat-desc">スマホやタブレットでもきれいに見られます。キッチンでそのまま使えます。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🎬</span>
+        <div class="feat-name">動画レシピ</div>
+        <p class="feat-desc">文字だけではわかりにくい工程も動画でご確認いただけます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PICKUP -->
+<section class="pickup">
+  <div class="pickup-inner">
+    <span class="pickup-label">— おすすめレシピ —</span>
+    <h2 class="pickup-title">人気のレシピをちょっと紹介</h2>
+    <div class="pickup-grid">
+      <a href="recipe-site.html" class="pickup-item">
+        <div class="pickup-img">🥘</div>
+        <div class="pickup-body">
+          <span class="pickup-cat">ごはん</span>
+          <div class="pickup-name">豚肉のやさしい煮込み</div>
+        </div>
+      </a>
+      <a href="recipe-site.html" class="pickup-item">
+        <div class="pickup-img">🍰</div>
+        <div class="pickup-body">
+          <span class="pickup-cat">スイーツ</span>
+          <div class="pickup-name">しっとりりんごのケーキ</div>
+        </div>
+      </a>
+      <a href="recipe-site.html" class="pickup-item">
+        <div class="pickup-img">☕</div>
+        <div class="pickup-body">
+          <span class="pickup-cat">ドリンク</span>
+          <div class="pickup-name">ほうじ茶ラテ</div>
+        </div>
+      </a>
+      <a href="recipe-site.html" class="pickup-item">
+        <div class="pickup-img">🍲</div>
+        <div class="pickup-body">
+          <span class="pickup-cat">スープ</span>
+          <div class="pickup-name">具だくさんみそ汁</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <span class="cta-label">さあ、レシピ帖を開きましょう</span>
+      <h2>今日は何を<em>作ろうかな</em></h2>
+      <p>レシピ一覧、検索、お気に入りなど<br>すべての機能はこちらからどうぞ。</p>
+    </div>
+    <a href="recipe-site.html" class="btn-cta">
+      レシピ帖を開く →
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">おうちごはん帖</span>
+    <p>毎日の食卓を、もっと豊かに。</p>
+  </div>
+</footer>
+
+</body>
+</html>
