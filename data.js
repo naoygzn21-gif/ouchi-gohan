@@ -2,7 +2,7 @@
    data.js — おうちごはん帖 共有データファイル
    管理画面の「データを保存」ボタンで上書き更新します
    =================================================== */
-var SITE_DATA = {
+SITE_DATA = {
   /* 管理者ログイン */
   adminEmail: "admin@example.com",
   adminPw:    "admin1234",
