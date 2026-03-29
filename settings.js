@@ -1,16 +1,12 @@
 /* =====================================================
    settings.js — おうちごはん帖 サイト設定
-   更新日時: 2026/3/29 21:59:44
+   管理画面「設定を保存」ボタンで上書き更新します
    ===================================================== */
 var SETTINGS_DATA = {
-  "adminEmail": "nao.ygzn21@gmail.com",
-  "adminPw": "kaikuu08",
-  "themeCss": ":root{--bg:#fffbf4;--paper:#ffffff;--paper2:#ffffb1;--ink:#2a3d28;--ink-mid:#4A69B3;--ink-lt:#7291db;--accent:#BA3801;--accent-lt:#ff8851;--accent-md:#FFEC89;--sub:#4A69B3;--border:#86a5ef;--border2:#4A69B3;--rule:#90aff9;--tape:#4A69B366;}",
-  "sections": {
-    "videos": true,
-    "gallery": true,
-    "favorites": true
-  },
-  "slideImages": [],
-  "slideInterval": 5000
+  adminEmail:    "admin@example.com",
+  adminPw:       "admin1234",
+  themeCss:      ":root{--bg:#fff8f2;--paper:#ffffff;--paper2:#fff0e6;--ink:#3a1500;--ink-mid:#4A69B3;--ink-lt:#8aa0cc;--accent:#BA3801;--accent-lt:#fde0cc;--accent-md:#FFEC89;--sub:#4A69B3;--border:#ffd0b0;--border2:#BA3801;--rule:#ffe8d0;--tape:rgba(74,105,179,0.35);}",
+  sections:      { videos: true, gallery: true, favorites: true },
+  slideImages:   [],
+  slideInterval: 5000
 };
