@@ -633,6 +633,81 @@ footer p { font-family:'Caveat',cursive; font-size:1rem; color:rgba(255,255,255,
   </div>
 </footer>
 
+<!-- レシピ編集モーダル -->
+<div id="edit-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:400;display:none;align-items:center;justify-content:center;padding:1.5rem;" onclick="closeEditModal(event)">
+  <div style="background:var(--paper);border:2px solid var(--ink);border-radius:6px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:6px 6px 0 rgba(0,0,0,0.15);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.4rem;border-bottom:1.5px solid var(--border);background:var(--ink);border-radius:4px 4px 0 0;">
+      <h2 style="font-family:'Kaisei Opti',serif;font-size:1.1rem;color:var(--paper);letter-spacing:0.08em;">レシピを編集</h2>
+      <button onclick="closeEditModalBtn()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:var(--paper);width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:0.85rem;">✕</button>
+    </div>
+    <div style="padding:1.4rem;">
+      <input type="hidden" id="edit-id">
+      <div class="adm-field-row">
+        <div class="adm-field">
+          <label>絵文字アイコン</label>
+          <input type="text" id="edit-emoji" placeholder="🍜" maxlength="2">
+        </div>
+        <div class="adm-field">
+          <label>カテゴリ</label>
+          <select id="edit-cat">
+            <option value="meal">ごはん</option>
+            <option value="drink">ドリンク</option>
+            <option value="sweets">スイーツ</option>
+            <option value="bread">パン・サンド</option>
+            <option value="soup">スープ</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-field">
+        <label>写真URL（GoogleドライブのURLをそのまま貼り付け）</label>
+        <input type="text" id="edit-img-url" placeholder="https://drive.google.com/file/d/XXXX/view" oninput="previewEditImg(this.value)">
+        <div class="img-preview" id="edit-img-preview" style="margin-top:.5rem;"><span>URLを入力するとプレビューが表示されます</span></div>
+      </div>
+      <div class="adm-field">
+        <label>レシピ名</label>
+        <input type="text" id="edit-title" placeholder="例：手作りラーメン">
+      </div>
+      <div class="adm-field">
+        <label>説明文</label>
+        <textarea id="edit-desc" placeholder="レシピの説明"></textarea>
+      </div>
+      <div class="adm-field-row">
+        <div class="adm-field">
+          <label>調理時間</label>
+          <input type="text" id="edit-time" placeholder="例：30分">
+        </div>
+        <div class="adm-field">
+          <label>難易度</label>
+          <select id="edit-level">
+            <option value="簡単">簡単</option>
+            <option value="普通">普通</option>
+            <option value="難しい">難しい</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-field">
+        <label>タグ（カンマ区切り）</label>
+        <input type="text" id="edit-tags" placeholder="例：和食, 作り置き">
+      </div>
+      <div class="adm-field">
+        <label>材料</label>
+        <div id="edit-ing-rows"></div>
+        <button class="adm-add-ing" onclick="addEditIngRow()">＋ 材料を追加</button>
+      </div>
+      <div class="adm-field">
+        <label>作り方</label>
+        <div id="edit-step-rows"></div>
+        <button class="adm-add-step" onclick="addEditStepRow()">＋ 手順を追加</button>
+      </div>
+      <div style="display:flex;gap:.8rem;margin-top:1rem;">
+        <button onclick="saveEditRecipe()" style="flex:1;background:var(--accent);color:#fff;border:none;padding:.75rem;border-radius:3px;font-family:'Kaisei Opti',serif;font-size:1rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">保存する</button>
+        <button onclick="closeEditModalBtn()" style="background:transparent;color:var(--ink-mid);border:1.5px solid var(--border2);padding:.75rem 1.4rem;border-radius:3px;font-family:'Zen Kurenaido',sans-serif;font-size:0.88rem;cursor:pointer;">キャンセル</button>
+      </div>
+      <div id="edit-success" style="display:none;font-size:0.82rem;color:#0f6e56;background:#e1f5ee;border-radius:3px;padding:.45rem .8rem;text-align:center;margin-top:.8rem;">✓ 保存しました！</div>
+    </div>
+  </div>
+</div>
+
 <!-- ライトボックス -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1037,10 +1112,25 @@ function renderIgPostList() {
   const list = document.getElementById('ig-post-list');
   if (!list) return;
   list.innerHTML = instagramPosts.length ? instagramPosts.map((url, i) => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .8rem;border:1px solid var(--border);border-radius:3px;margin-bottom:.4rem;font-size:0.8rem;">
-      <span style="color:var(--ink-mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${url}</span>
-      <button onclick="removeInstagramPost(${i})" style="background:transparent;border:1px solid var(--border2);color:var(--accent);border-radius:3px;padding:2px 8px;font-size:0.76rem;cursor:pointer;margin-left:.5rem;flex-shrink:0;">削除</button>
+    <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;">
+      <input type="text" value="${url}" onchange="updateIgPost(${i},this.value)" style="flex:1;font-size:0.78rem;padding:.4rem .6rem;border:1px solid var(--border2);border-radius:3px;background:var(--bg);color:var(--ink);">
+      <button onclick="moveIgPost(${i},-1)" ${i===0?'disabled':''} style="background:transparent;border:1px solid var(--border2);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:0.82rem;" title="上へ">↑</button>
+      <button onclick="moveIgPost(${i},1)" ${i===instagramPosts.length-1?'disabled':''} style="background:transparent;border:1px solid var(--border2);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:0.82rem;" title="下へ">↓</button>
+      <button onclick="removeInstagramPost(${i})" style="background:transparent;border:1px solid var(--border2);color:var(--accent);border-radius:3px;padding:2px 8px;font-size:0.76rem;cursor:pointer;">削除</button>
     </div>`).join('') : '<p style="font-size:0.82rem;color:var(--ink-lt);">まだ投稿が登録されていません</p>';
+}
+
+function updateIgPost(i, val) {
+  instagramPosts[i] = val.trim();
+  renderInstagramGallery();
+}
+
+function moveIgPost(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= instagramPosts.length) return;
+  [instagramPosts[i], instagramPosts[j]] = [instagramPosts[j], instagramPosts[i]];
+  renderIgPostList();
+  renderInstagramGallery();
 }
 
 /* =====================================================
@@ -1191,9 +1281,100 @@ function renderAdmList() {
         ${r.image ? `<img src="${r.image}" style="width:32px;height:32px;object-fit:cover;border-radius:3px;border:1px solid var(--border);">` : `<span class="adm-item-emoji">${r.emoji||'🍽'}</span>`}
         <span>${r.title}</span>
       </div>
-      <button class="adm-del-btn" onclick="deleteRecipe(${r.id})">削除</button>
+      <div style="display:flex;gap:.4rem;">
+        <button class="adm-del-btn" style="background:var(--sub);border-color:var(--sub);" onclick="openEditModal(${r.id})">編集</button>
+        <button class="adm-del-btn" onclick="deleteRecipe(${r.id})">削除</button>
+      </div>
     </div>`).join('') : '<p style="color:var(--ink-lt);font-size:0.86rem;text-align:center;padding:1rem;">レシピがありません</p>';
   const el = document.getElementById('spec-count'); if (el) el.textContent = recipes.length + '件';
+}
+
+/* =====================================================
+   レシピ編集モーダル
+   ===================================================== */
+function openEditModal(id) {
+  const r = recipes.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-emoji').value = r.emoji || '';
+  document.getElementById('edit-cat').value = r.category;
+  document.getElementById('edit-title').value = r.title;
+  document.getElementById('edit-desc').value = r.desc;
+  document.getElementById('edit-time').value = r.time;
+  document.getElementById('edit-level').value = r.level;
+  document.getElementById('edit-tags').value = (r.tags || []).join(', ');
+  // 写真URL（変換前のURLを保存していれば表示、なければ変換済みURLを表示）
+  const imgUrl = r.imageRaw || r.image || '';
+  document.getElementById('edit-img-url').value = imgUrl;
+  previewEditImg(imgUrl);
+  // 材料
+  document.getElementById('edit-ing-rows').innerHTML = (r.ingredients || []).map(i =>
+    `<div class="ing-row"><input type="text" value="${i[0]}" placeholder="材料名"><input type="text" value="${i[1]}" placeholder="分量" style="max-width:100px"><button class="del-row" onclick="delRow(this)">×</button></div>`
+  ).join('') || '<div class="ing-row"><input type="text" placeholder="材料名"><input type="text" placeholder="分量" style="max-width:100px"><button class="del-row" onclick="delRow(this)">×</button></div>';
+  // 手順
+  document.getElementById('edit-step-rows').innerHTML = (r.steps || []).map(s =>
+    `<div class="step-row"><input type="text" value="${s}" placeholder="手順"><button class="del-row" onclick="delRow(this)">×</button></div>`
+  ).join('') || '<div class="step-row"><input type="text" placeholder="手順1"><button class="del-row" onclick="delRow(this)">×</button></div>';
+  document.getElementById('edit-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeEditModal(e) { if (e.target.id === 'edit-overlay') closeEditModalBtn(); }
+function closeEditModalBtn() {
+  document.getElementById('edit-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function previewEditImg(rawUrl) {
+  const preview = document.getElementById('edit-img-preview');
+  if (!rawUrl.trim()) { preview.innerHTML = '<span>URLを入力するとプレビューが表示されます</span>'; return; }
+  const url = convertGDriveUrl(rawUrl.trim());
+  preview.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<span>画像を読み込めませんでした</span>';">`;
+}
+function addEditIngRow() {
+  const d = document.createElement('div'); d.className='ing-row';
+  d.innerHTML = '<input type="text" placeholder="材料名"><input type="text" placeholder="分量" style="max-width:100px"><button class="del-row" onclick="delRow(this)">×</button>';
+  document.getElementById('edit-ing-rows').appendChild(d);
+}
+function addEditStepRow() {
+  const n = document.getElementById('edit-step-rows').querySelectorAll('.step-row').length + 1;
+  const d = document.createElement('div'); d.className='step-row';
+  d.innerHTML = `<input type="text" placeholder="手順${n}"><button class="del-row" onclick="delRow(this)">×</button>`;
+  document.getElementById('edit-step-rows').appendChild(d);
+}
+function saveEditRecipe() {
+  const id = parseInt(document.getElementById('edit-id').value);
+  const idx = recipes.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  const catMap = {meal:'ごはん',drink:'ドリンク',sweets:'スイーツ',bread:'パン・サンド',soup:'スープ'};
+  const cat = document.getElementById('edit-cat').value;
+  const rawUrl = document.getElementById('edit-img-url').value.trim();
+  const ings = [];
+  document.getElementById('edit-ing-rows').querySelectorAll('.ing-row').forEach(row => {
+    const ins = row.querySelectorAll('input');
+    if (ins[0].value.trim()) ings.push([ins[0].value.trim(), ins[1].value.trim()]);
+  });
+  const steps = [];
+  document.getElementById('edit-step-rows').querySelectorAll('.step-row input').forEach(inp => {
+    if (inp.value.trim()) steps.push(inp.value.trim());
+  });
+  recipes[idx] = {
+    ...recipes[idx],
+    emoji:    document.getElementById('edit-emoji').value.trim() || '🍽',
+    category: cat,
+    catLabel: catMap[cat],
+    title:    document.getElementById('edit-title').value.trim(),
+    desc:     document.getElementById('edit-desc').value.trim(),
+    time:     document.getElementById('edit-time').value.trim() || '—',
+    level:    document.getElementById('edit-level').value,
+    tags:     document.getElementById('edit-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    imageRaw: rawUrl,
+    image:    rawUrl ? convertGDriveUrl(rawUrl) : null,
+    ingredients: ings,
+    steps
+  };
+  const suc = document.getElementById('edit-success');
+  suc.style.display = 'block';
+  setTimeout(() => { suc.style.display='none'; closeEditModalBtn(); }, 1500);
+  renderAdmList(); renderRecipes();
 }
 
 function deleteRecipe(id) {
