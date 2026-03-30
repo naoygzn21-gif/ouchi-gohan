@@ -1131,7 +1131,7 @@ function addSlideByFilename() {
   const input = document.getElementById('slide-filename');
   const filename = input.value.trim();
   if (!filename) { alert('ファイル名を入力してください'); return; }
-  const url = convertGDriveUrl(filename.startsWith('http') ? filename : 'images/' + filename);
+  const url = convertGDriveUrl(filename);
   slideImages.push(url);
   input.value = '';
   renderSlideshow();
