@@ -1,9 +1,9 @@
 /* =====================================================
    settings.js — おうちごはん帖 サイト設定
-   更新日時: 2026/3/31 0:10:48
+   更新日時: 2026/3/31 0:12:14
    ===================================================== */
 var SETTINGS_DATA = {
-  "adminEmail": "admin@example.com",
+  "adminEmail": "nao.ygzn21@gmail.com",
   "adminPw": "kaikuu08",
   "themeCss": "",
   "sections": {
