@@ -1,12 +1,12 @@
 /* =====================================================
    recipes.js — おうちごはん帖 レシピデータ
-   更新日時: 2026/3/30 23:19:20
+   更新日時: 2026/3/30 23:28:12
    ===================================================== */
 var RECIPES_DATA = [
   {
     "id": 1,
     "emoji": "🍽",
-    "image": "https://drive.google.com/thumbnail?id=1Ui3ZNLL1l1710lXWDti0wc_q050s1lUG&sz=w800",
+    "image": "https://drive.google.com/thumbnail?id=1afefmytENT6pu-JICLuAuwdzP-hDxmBQ&sz=w800",
     "category": "meal",
     "catLabel": "ごはん",
     "title": "山芋のお好み焼き",
@@ -58,16 +58,16 @@ var RECIPES_DATA = [
       "裏返す前に豚肉を上に置いてひっくり返す",
       "爪楊枝で生地を刺してみて、くっつかなければ完成。トッピングはお好みで！"
     ],
-    "imageRaw": "https://drive.google.com/file/d/1Ui3ZNLL1l1710lXWDti0wc_q050s1lUG/view?usp=sharing"
+    "imageRaw": "https://drive.google.com/file/d/1afefmytENT6pu-JICLuAuwdzP-hDxmBQ/view?usp=sharing"
   },
   {
     "id": 2,
     "emoji": "🍽",
-    "image": "https://drive.google.com/thumbnail?id=1nIM4StSlXKJDLvfwapjgktpFYXfXjHxR&sz=w800",
+    "image": "https://drive.google.com/thumbnail?id=1tu2mGuxcxWI78qj-7c62_lMa6ryp9dAR&sz=w800",
     "category": "meal",
     "catLabel": "ごはん",
     "title": "納豆の卵焼き",
-    "desc": "ちょっとひと工夫",
+    "desc": "昔お弁当によく入っていた卵焼きの味に納豆を追加してひと工夫！",
     "time": "10分",
     "level": "簡単",
     "tags": [
@@ -92,12 +92,12 @@ var RECIPES_DATA = [
       "卵をすべてといて、混ぜた納豆を入れる",
       "卵を巻いていく"
     ],
-    "imageRaw": "https://drive.google.com/file/d/1nIM4StSlXKJDLvfwapjgktpFYXfXjHxR/view?usp=sharing"
+    "imageRaw": "https://drive.google.com/file/d/1tu2mGuxcxWI78qj-7c62_lMa6ryp9dAR/view?usp=sharing"
   },
   {
     "id": 3,
     "emoji": "🍽",
-    "image": "https://drive.google.com/thumbnail?id=1hPW5_7m9kUMexFhalAKJzItm2rQkQwTQ&sz=w800",
+    "image": "https://drive.google.com/thumbnail?id=1hhrwHFZ5pIfvBtyE63_9cCoamJz3dX5V&sz=w800",
     "category": "meal",
     "catLabel": "ごはん",
     "title": "せせりとスナップエンドウの柚子胡椒炒め",
@@ -142,6 +142,7 @@ var RECIPES_DATA = [
       "油を引いて熱したフライパンに玉ねぎを入れて炒める",
       "玉ねぎが柔らかくなってきたらせせりとAを入れる",
       "全てに火が通ったらスナップエンドウを入れて少し炒めて完成"
-    ]
+    ],
+    "imageRaw": "https://drive.google.com/file/d/1hhrwHFZ5pIfvBtyE63_9cCoamJz3dX5V/view?usp=sharing"
   }
 ];
